@@ -63,22 +63,22 @@ class Hunyuan3DPaintPipeline:
             multiview_model_path = os.path.join(model_path, subfolder)
 
             if not os.path.exists(delight_model_path) or not os.path.exists(multiview_model_path):
-                try:
-                    import huggingface_hub
-                    # download from huggingface
-                    model_path = huggingface_hub.snapshot_download(
-                        repo_id=original_model_path, allow_patterns=["hunyuan3d-delight-v2-0/*"]
-                    )
-                    model_path = huggingface_hub.snapshot_download(
-                        repo_id=original_model_path, allow_patterns=[f'{subfolder}/*']
-                    )
-                    delight_model_path = os.path.join(model_path, 'hunyuan3d-delight-v2-0')
-                    multiview_model_path = os.path.join(model_path, subfolder)
-                    return cls(Hunyuan3DTexGenConfig(delight_model_path, multiview_model_path, subfolder))
-                except Exception:
-                    import traceback
-                    traceback.print_exc()
-                    raise RuntimeError(f"Something wrong while loading {model_path}")
+                # try:
+                import huggingface_hub
+                # download from huggingface
+                model_path = huggingface_hub.snapshot_download(
+                    repo_id=original_model_path, allow_patterns=["hunyuan3d-delight-v2-0/*"]
+                )
+                model_path = huggingface_hub.snapshot_download(
+                    repo_id=original_model_path, allow_patterns=[f'{subfolder}/*']
+                )
+                delight_model_path = os.path.join(model_path, 'hunyuan3d-delight-v2-0')
+                multiview_model_path = os.path.join(model_path, subfolder)
+                return cls(Hunyuan3DTexGenConfig(delight_model_path, multiview_model_path, subfolder))
+                # except Exception:
+                #     import traceback
+                #     traceback.print_exc()
+                #     raise RuntimeError(f"Something wrong while loading {model_path}")
             else:
                 return cls(Hunyuan3DTexGenConfig(delight_model_path, multiview_model_path, subfolder))
         else:
